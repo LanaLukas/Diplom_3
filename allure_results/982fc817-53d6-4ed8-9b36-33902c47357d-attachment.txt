@@ -1,0 +1,1 @@
+[33mWARNING [0m selenium.webdriver.common.selenium_manager:selenium_manager.py:135 There was an error managing firefox (The geckodriver version cannot be discovered); using driver found in the cache
