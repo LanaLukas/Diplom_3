@@ -1,6 +1,5 @@
 import allure
 
-from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, ElementClickInterceptedException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -57,10 +56,18 @@ class BasePage:
         except TimeoutException:
             return False
 
+    @allure.step('Ожидаем появление элемента')
+    def wait_for_element_presence(self, locator, timeout=10):
+        WebDriverWait(self.driver, timeout).until(ec.presence_of_element_located(locator))
+
+    @allure.step('Ожидаем выполнения условия')
+    def wait_until(self, condition, timeout=10):
+        return WebDriverWait(self.driver, timeout).until(condition)
+
     @allure.step('Проверяем невидимость элемента')
-    def is_element_not_visible(self, locator, timeout=5):
+    def is_element_not_visible(self, locator):
         try:
-            WebDriverWait(self.driver, timeout).until(ec.invisibility_of_element_located(locator))
+            self.wait.until(ec.invisibility_of_element_located(locator))
             return True
         except TimeoutException:
             return False
@@ -113,7 +120,7 @@ class BasePage:
         try:
             WebDriverWait(self.driver, 5).until(
                 ec.invisibility_of_element_located(
-                    (By.XPATH, "//div[contains(@class,'Modal_modal_overlay')]")
+                    BasePageLocators.MODAL_OVERLAY
                 )
             )
         except TimeoutException:

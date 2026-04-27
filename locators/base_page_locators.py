@@ -14,3 +14,7 @@ class BasePageLocators:
         By.XPATH,
         "//a[contains(@class,'AppHeader_header__link')][.//p[contains(text(),'Личный')]]",
     )
+    MODAL_OVERLAY = (
+        By.XPATH,
+        "//div[contains(@class,'Modal_modal_overlay')]",
+    )

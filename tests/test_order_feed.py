@@ -1,12 +1,8 @@
 import allure
 
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
-
 from helpers import create_order_with_ingredients
 from pages.order_feed_page import OrderFeedPage
 from pages.order_modal import OrderModal
-from locators.order_feed_page_locators import OrderFeedPageLocators
 
 
 class TestOrderFeed:
@@ -23,9 +19,7 @@ class TestOrderFeed:
     def test_user_orders_appear_in_order_feed(self, driver):
         order_number = create_order_with_ingredients()
         order_feed_page = OrderFeedPage(driver).open()
-        WebDriverWait(driver, 10).until(
-            ec.presence_of_element_located(OrderFeedPageLocators.ORDER_CARD)
-        )
+        order_feed_page.wait_for_orders_loaded()
 
         order_feed_page.click_order_by_number(order_number)
         order_modal = OrderModal(driver)
@@ -38,9 +32,7 @@ class TestOrderFeed:
         counter_before = order_feed_page.get_total_orders_counter()
         create_order_with_ingredients()
         order_feed_page.open()
-        WebDriverWait(driver, 10).until(
-            ec.presence_of_element_located(OrderFeedPageLocators.TOTAL_ORDERS_COUNTER)
-        )
+        order_feed_page.wait_for_total_counter_loaded()
         counter_after = order_feed_page.get_total_orders_counter()
         assert counter_after > counter_before
 
@@ -51,9 +43,7 @@ class TestOrderFeed:
         counter_before = order_feed_page.get_today_orders_counter()
         create_order_with_ingredients()
         order_feed_page.open()
-        WebDriverWait(driver, 10).until(
-            ec.presence_of_element_located(OrderFeedPageLocators.TODAY_ORDERS_COUNTER)
-        )
+        order_feed_page.wait_for_today_counter_loaded()
         counter_after = order_feed_page.get_today_orders_counter()
         assert counter_after > counter_before
 

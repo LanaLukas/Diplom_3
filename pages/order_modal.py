@@ -1,5 +1,4 @@
 import allure
-from selenium.webdriver.support.wait import WebDriverWait
 
 from pages.base_page import BasePage
 from locators.order_modal_locators import OrderModalLocators
@@ -21,5 +20,5 @@ class OrderModal(BasePage):
                 return False
             text = elements[0].text.strip()
             return text and text != "9999"
-        WebDriverWait(self.driver, timeout).until(order_number_ready)
+        self.wait_until(order_number_ready, timeout)
         return self.get_text(OrderModalLocators.ORDER_NUMBER_IN_MODAL)

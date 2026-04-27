@@ -1,5 +1,4 @@
 import allure
-from selenium.webdriver.support.wait import WebDriverWait
 
 from pages.base_page import BasePage
 from locators.order_feed_page_locators import OrderFeedPageLocators
@@ -45,4 +44,16 @@ class OrderFeedPage(BasePage):
             texts = [el.text for el in elements]
             return formatted_number in texts or plain_number in texts
 
-        return WebDriverWait(self.driver, timeout).until(order_appeared)
+        return self.wait_until(order_appeared, timeout)
+
+    @allure.step('Ожидаем загрузки карточек заказов')
+    def wait_for_orders_loaded(self, timeout=10):
+        self.wait_for_element_presence(OrderFeedPageLocators.ORDER_CARD, timeout)
+
+    @allure.step('Ожидаем загрузки счётчика «Выполнено за всё время»')
+    def wait_for_total_counter_loaded(self, timeout=10):
+        self.wait_for_element_presence(OrderFeedPageLocators.TOTAL_ORDERS_COUNTER, timeout)
+
+    @allure.step('Ожидаем загрузки счётчика «Выполнено за сегодня»')
+    def wait_for_today_counter_loaded(self, timeout=10):
+        self.wait_for_element_presence(OrderFeedPageLocators.TODAY_ORDERS_COUNTER, timeout)

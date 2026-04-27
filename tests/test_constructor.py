@@ -4,7 +4,6 @@ from pages.login_page import LoginPage
 from pages.main_page import MainPage
 from pages.order_feed_page import OrderFeedPage
 from pages.order_modal import OrderModal
-from locators.main_page_locators import MainPageLocators
 from test_data import TEST_BUN_NAME, TEST_FILLING_NAME, TEST_USER_EMAIL, TEST_USER_PASSWORD
 from test_url import ORDER_FEED_URL, MAIN_PAGE_URL
 
@@ -37,7 +36,7 @@ class TestConstructor:
         main_page = MainPage(driver).open()
         main_page.click_ingredient(TEST_BUN_NAME)
         main_page.close_modal()
-        assert main_page.is_element_not_visible(MainPageLocators.INGREDIENT_MODAL_TITLE)
+        assert main_page.is_ingredient_modal_closed()
 
     @allure.title('Добавление ингредиента увеличивает каунтер')
     @allure.description('Проверяем, что при добавлении ингредиента в заказ увеличивается счётчик данного ингредиента.')

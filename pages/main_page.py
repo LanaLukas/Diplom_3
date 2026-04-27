@@ -1,9 +1,5 @@
 import allure
 
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
-
 from pages.base_page import BasePage
 from locators.main_page_locators import MainPageLocators
 from test_url import MAIN_PAGE_URL
@@ -32,11 +28,9 @@ class MainPage(BasePage):
             MainPageLocators.INGREDIENT_COUNTER[0],
             MainPageLocators.INGREDIENT_COUNTER[1].format(name=name),
         )
-        try:
-            WebDriverWait(self.driver, 3).until(ec.visibility_of_element_located(locator))
+        if self.is_element_visible(locator):
             return int(self.get_text(locator))
-        except TimeoutException:
-            return 0
+        return 0
 
     @allure.step('Перетаскиваем ингредиент {name} в конструктор')
     def drag_ingredient_to_constructor(self, name):
@@ -61,3 +55,7 @@ class MainPage(BasePage):
     @allure.step('Проверяем видимость модального окна ингредиента')
     def is_ingredient_modal_visible(self):
         return self.is_element_visible(MainPageLocators.INGREDIENT_MODAL_TITLE)
+
+    @allure.step('Проверяем, что модальное окно ингредиента закрыто')
+    def is_ingredient_modal_closed(self):
+        return self.is_element_not_visible(MainPageLocators.INGREDIENT_MODAL_TITLE)
